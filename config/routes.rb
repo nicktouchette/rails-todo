@@ -1,12 +1,17 @@
 Rails.application.routes.draw do
-  resources :users
-  resources :todos
-  # get 'static_pages/home'
+  resources :sessions, only:[:new, :create, :destroy]
 
-  # get 'static_pages/about'
+  resources :users
+
+  match '/signup',  to: 'users#new',               via: 'get'
+  match '/signin',  to: 'sessions#new',            via: 'get'
+  match '/sessions/create', to: 'sessions#create', via: 'post'
+  match '/signout', to: 'sessions#destroy',        via: 'delete'
 
   root to: 'static_pages#home'
   match '/about', to: 'static_pages#about', via: 'get'
+
+  resources :todos
   match 'todos/:id/toggle_completed', to: 'todos#toggle_completed', via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
